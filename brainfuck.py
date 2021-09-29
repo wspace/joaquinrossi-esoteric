@@ -35,7 +35,7 @@ def pair_brackets(string):
 
     return r
 
-def interpret(program):
+def run(program):
     program = list(filter(lambda c: c in cmds, program))
 
     if not validate_brackets(program):
@@ -71,7 +71,12 @@ def interpret(program):
             ip += 1
 
         elif op == ",":
-            buff[ptr] = ord(sys.stdin.read(1))
+            read = sys.stdin.read(1)
+            if read != '':
+                buff[ptr] = ord(read)
+            else:
+                exit(1)
+
             ip += 1
 
         elif op == "[":
@@ -190,7 +195,7 @@ def main():
     source   = open(file, "r").read()
 
     if sys.argv[1] == "run":
-        interpret(source)
+        run(source)
     elif sys.argv[1] == "build":
         build(source, open(f"{basename}.asm", "w"))
 
