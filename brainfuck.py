@@ -183,6 +183,7 @@ def cmd_echo(cmd):
 def main():
     if len(sys.argv) != 3:
         usage(sys.stderr)
+        exit(1)
 
     mode = sys.argv[1]
     file = sys.argv[2]
@@ -196,12 +197,17 @@ def main():
 
     if sys.argv[1] == "run":
         run(source)
+
     elif sys.argv[1] == "build":
         build(source, open(f"{basename}.asm", "w"))
 
         cmd_echo(["nasm", "-felf64", f"{basename}.asm"])
         cmd_echo(["ld", "-o", basename, f"{basename}.o"])
         cmd_echo(["rm", f"{basename}.asm", f"{basename}.o"])
+
+    else:
+        usage(sys.stderr)
+        exit(1)
 
 if __name__ == "__main__":
     main()
