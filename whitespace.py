@@ -283,7 +283,7 @@ def read_label(inp, ip):
         label.append(inp[ip])
         ip += 1
 
-    return label, ip
+    return "".join(map(lambda c: symbols[c], label)), ip
 
 def run(inp):
     inp = tokenize(inp)
