@@ -2,6 +2,7 @@
 from enum import Enum, auto
 import sys
 
+
 class Instr(Enum):
     S = auto()
     T = auto()
@@ -17,9 +18,10 @@ symbols = { v: k for k, v in tokens.items() }
 
 def tokenize(inp):
     return list(
-           map(lambda c: tokens[c],
-           filter(lambda c: c in tokens.keys(),
-                  inp)))
+            map(lambda c: tokens[c],
+            filter(lambda c: c in tokens.keys(),
+                   inp)))
+
 
 class IMP(Enum):
     S  = auto()
@@ -57,6 +59,7 @@ def read_imp(inp, ip):
         raise ValueError
 
     return imp, ip
+
 
 class CMD(Enum):
     S = auto()
@@ -235,6 +238,7 @@ def read_cmd(inp, ip, imp):
 
     return cmd, ip
 
+
 def read_number(inp, ip):
     sign = 0
     if inp[ip] == Instr.S:
@@ -274,6 +278,7 @@ def read_number(inp, ip):
 
     return sign * result, ip
 
+
 def read_label(inp, ip):
     if inp[ip] == Instr.L:
         raise ValueError
@@ -284,6 +289,7 @@ def read_label(inp, ip):
         ip += 1
 
     return "".join(map(lambda c: symbols[c], label)), ip
+
 
 def run(inp):
     inp = tokenize(inp)
@@ -314,7 +320,7 @@ def run(inp):
             elif cmd == CMD.TL:
                 # TODO: check order
                 number, ip = read_number(inp, ip)
-                stack = stack[n:]
+                stack = stack[number:]
 
             elif cmd == CMD.LS:
                 top = stack.pop()
@@ -445,11 +451,14 @@ def run(inp):
         else:
             raise ValueError
 
+
 def build(inp):
     raise NotImplementedError
 
+
 def usage(out=sys.stdout):
     out.write("usage: whitespace [mode] [file]\n")
+
 
 def main():
     if len(sys.argv) != 3:
@@ -468,6 +477,7 @@ def main():
             run(src)
         else:
             raise ValueError
+
 
 if __name__ == "__main__":
     main()
